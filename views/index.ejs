@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Shared Memo</title>
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href='css/reset.css' />
+<link rel='stylesheet' href='css/style.css' />
+<link rel="shortcut icon" href="">
+</head>
+<body>
+
+<div id="app">
+
+  <header>
+  Header
+  </header>
+
+  <main v-bind:class="doc.type">
+
+    <article class="doc">
+      <h1 class="title">
+        <span class="path" v-if="doc.parent">
+          <a href="#" v-on:click="changeCurrentNode(doc.parent.id)">{{ doc.parent.title}} </a> &gt; 
+        </span>
+        {{ doc.title }}
+      </h1>
+      <section class="content">
+        {{ doc.content }}
+      </section>
+      
+      <section class="button" v-if='doc.type == "document"'>
+        <button class="exec" v-on:click="editDoc()">Edit</button>
+      </section>
+    </article>
+
+    <section class="children" v-if="doc.children">
+      <article class="child" v-for="child in sortedChildren">
+        <h2 class="title" v-if="child.title"><a href="#" v-on:click="changeCurrentNode(child.id)">{{ child.title }}</a></h2>
+        <div class="content">{{ child.content }}</div>
+      </article>
+    </section>
+
+    <section class="comment-area"  v-if='doc.type == "document"'>
+      <textarea v-focus rows="4" v-model="status.comment" placeholder="コメント"></textarea>
+      <button class="exec" v-bind:disabled="!isCommentPostable" v-on:click="submitComment()">Comment</button>
+    </section>
+ 
+  
+  </main>
+  
+  <div v-if='doc.type == "collection"'>
+    <button class="exec add" v-on:click="addNewDoc()">Add</button>
+  </div>
+  
+  <template v-if='status.editor.active'>
+    <div class="modal-overlay"></div>
+    <div class="dialog">
+      <h2 class="title">{{ isNewArticle ? "新しい記事" : "記事の編集" }}</h2>
+      <section class="form">
+        <input type="text" v-model="status.editor.title" placeholder="タイトル" />
+        <textarea v-focus v-model="status.editor.content" placeholder="本文"></textarea>
+      </section>
+      <section class="button">
+        <button v-on:click="cancelEdit()">キャンセル</button>
+        <button class="exec" v-bind:disabled="!isDocPostable" v-on:click="submitDoc()">保存</button>
+      </section>
+    </div>
+  </template>
+
+</div>
+
+
+<script src="https://www.promisejs.org/polyfills/promise-6.1.0.min.js"></script>
+<!-- script src="https://code.jquery.com/jquery-3.3.1.min.js"></script -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="js/page.js"></script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+/* ------------------------------------ */
+/* color */
+
+$color-text : #000;
+$color-back : #fff;
+$color-shadow : #aaa;
+$color-body : #ddd;
+
+$color-default-text      : $color-text;
+$color-dimmed-text       : #888;
+$color-link-text         : #11a;
+$color-link-text-visited : #628;
+$color-body-back         : $color-body;
+$color-dialog-back       : $color-body;
+$color-dialog-shadow     : $color-shadow;
+$color-header-back       : #333;
+$color-header-text       : $color-back;
+$color-content-back      : $color-back;
+$color-content-shadow    : $color-shadow;
+$color-button-text       : $color-text;
+$color-button-back       : $color-back;
+$color-button-border     : #000;
+$color-execButton-text   : #fff;
+$color-execButton-back   : #33f;
+
+/* common */
+$margin:  8px;
+$padding: 8px;
+
+/* ------------------------------------ */
+body {
+  background: $color-body-back;
+}
+
+* {
+  color : $color-default-text;
+}
+
+a:link {
+  color: $color-link-text;
+}
+
+a:visited {
+  color: $color-link-text-visited;
+}
+
+/* ------------------------------------ */
+header {
+  background: $color-header-back;
+  color: $color-header-text;
+  padding: $padding;
+  margin-top:0px;
+  margin-bottom: $margin;
+  position:fixed;
+  top:0px;
+  width:100%;
+}
+
+/* ------------------------------------ */
+
+@mixin card {
+  background: $color-content-back;
+  padding: $padding;
+  box-shadow: 1px 1px 1px 1px $color-content-shadow;
+  border-radius:4px;
+}
+
+main {
+  margin-top:40px;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: $margin;
+}
+
+.doc {
+  margin: $margin;
+  width:calc( 100% - #{$margin} * 4 );
+}
+
+
+/* Collection / Document / Comment */
+.collection {
+  .children {
+    width:100%;
+    display: flex;
+    flex-wrap: wrap;    
+    .child {
+      @include card;
+      width:calc( 100% / 3 - #{$margin} * 2 - #{$padding} *2 );
+      height:160px;
+      margin: $margin;
+      overflow:hidden;
+      .title {
+        margin-bottom: $margin;
+      }
+    }
+  }
+}
+
+.document {
+  .doc {
+    @include card;
+  }
+  .children {
+    width:100%;
+    margin-top: 16px;
+    .child {
+      @include card;
+      width:calc( 100% - #{$margin} * 5 - #{$padding} *2 );
+      margin: $margin $margin $margin 32px;
+    }
+  }
+  .comment-area {
+    width:calc( 100% - #{$margin} * 5 - #{$padding} *2 );
+    margin: 16px $margin $margin 32px;
+    display : table;
+    * {
+      display:table-cell;
+      vertical-align:bottom;
+    }
+    textarea {
+      width: calc(100% - #{$margin} * 5 - #{$padding} *2 - 4rem );
+      height:4rem;
+    }
+
+  }
+}
+
+
+/* ------------------------------------ */
+button {
+  padding:16px;
+  border-radius: 16px;
+  cursor: pointer;
+  border: 1px solid $color-button-border;
+  background: $color-button-back;
+  color: $color-button-text;
+}
+
+* + button {
+  margin-left: $margin;
+}
+
+button.exec {
+  border-color: $color-execButton-back;
+  background: $color-execButton-back;
+  color: $color-execButton-text;
+  min-width:5rem;
+}
+
+button:disabled {
+  border-color: $color-dimmed-text;
+  background: $color-body-back;
+  color: $color-dimmed-text;
+}
+
+section.button {
+  margin-top: $margin;
+  text-align:right;
+}
+
+
+
+
+button.add{
+  position:fixed;
+  bottom:8px;
+  right:8px;
+}
+
+.dialog {
+  background: $color-dialog-back;
+  padding: $padding;
+  box-shadow: 1px 1px 1px 1px $color-dialog-shadow;
+  border-radius:4px;
+
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  width:90%;
+  
+  .form {
+    width:100%;
+    padding: $padding;
+    input {
+      width: calc(100% - #{$padding} * 2);
+      margin-bottom: $margin;
+    }
+    textarea {
+      width: calc(100% - #{$padding} * 2);
+      height:10rem;
+    }
+  }
+}
+
+
+.modal-overlay {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:120%;
+	background-color:rgba(0,0,0,0.75);
+}
