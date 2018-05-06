@@ -7,8 +7,8 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href='css/reset.css' />
-<link rel='stylesheet' href='css/style.css' />
+<link rel="stylesheet" href='/css/reset.css' />
+<link rel='stylesheet' href='/css/style.css' />
 <link rel="shortcut icon" href="">
 </head>
 <body>
@@ -19,42 +19,65 @@
   Header
   </header>
 
-  <main v-bind:class="doc.type">
+  <div v-bind:class="doc.type">
 
-    <article class="doc">
-      <h1 class="title">
-        <span class="path" v-if="doc.parent">
-          <a href="#" v-on:click="changeCurrentNode(doc.parent.id)">{{ doc.parent.title}} </a> &gt; 
-        </span>
-        {{ doc.title }}
-      </h1>
-      <section class="content">
-        {{ doc.content }}
-      </section>
-      
-      <section class="button" v-if='doc.type == "document"'>
-        <button class="exec" v-on:click="editDoc()">Edit</button>
-      </section>
-    </article>
 
-    <section class="children" v-if="doc.children">
-      <article class="child" v-for="child in sortedChildren">
-        <h2 class="title" v-if="child.title"><a href="#" v-on:click="changeCurrentNode(child.id)">{{ child.title }}</a></h2>
-        <div class="content">{{ child.content }}</div>
+    <template v-if='doc.type==="collection"'>
+      <article class="doc">
+        <h1 class="title">
+          <span class="path" v-if="doc.parent">
+            <a v-bind:href="doc.parent.id">{{ doc.parent.title}} </a> &gt; 
+          </span>
+          {{ doc.title }}
+        </h1>
+        <section class="content">
+          {{ doc.content }}
+        </section>
       </article>
-    </section>
 
-    <section class="comment-area"  v-if='doc.type == "document"'>
-      <textarea v-focus rows="4" v-model="status.comment" placeholder="コメント"></textarea>
-      <button class="exec" v-bind:disabled="!isCommentPostable" v-on:click="submitComment()">Comment</button>
-    </section>
+      <section class="children" v-if="doc.children">
+        <article class="child" v-for="child in sortedChildren">
+          <h2 class="title">
+            <a v-bind:href="child.id">{{ child.title }}</a>
+          </h2>
+          <div class="content">{{ child.content }}</div>
+        </article>
+      </section>
  
-  
-  </main>
-  
-  <div v-if='doc.type == "collection"'>
-    <button class="exec add" v-on:click="addNewDoc()">Add</button>
+      <button class="exec add" v-on:click="addNewDoc()">Add</button>
+
+    </template>
+
+    <template v-if='doc.type==="document"'>
+      <article class="doc">
+        <h1 class="title">
+          <span class="path" v-if="doc.parent">
+            <a v-bind:href="doc.parent.id">{{ doc.parent.title}} </a> &gt; 
+          </span>
+          {{ doc.title }}
+        </h1>
+        <section class="content" v-html="getHtmlContent(doc)">
+        </section>
+
+        <section class="button" v-if="!doc.fixed">
+          <button class="exec" v-on:click="editDoc()">Edit</button>
+        </section>
+      </article>
+
+      <section class="children" v-if="doc.children">
+        <article class="child" v-for="child in sortedChildren">
+          <div class="content"  v-html="getHtmlContent(child)"></div>
+        </article>
+      </section>
+
+      <section class="comment-area" v-if="!doc.fixed">
+        <textarea v-focus rows="4" v-model="status.comment" placeholder="コメント"></textarea>
+        <button class="exec" v-bind:disabled="!isCommentPostable" v-on:click="submitComment()">Comment</button>
+      </section>
+    </template>
+
   </div>
+  
   
   <template v-if='status.editor.active'>
     <div class="modal-overlay"></div>
@@ -76,8 +99,9 @@
 
 <script src="https://www.promisejs.org/polyfills/promise-6.1.0.min.js"></script>
 <!-- script src="https://code.jquery.com/jquery-3.3.1.min.js"></script -->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="js/page.js"></script>
+<script src="/js/page.js"></script>
 </body>
 </html>

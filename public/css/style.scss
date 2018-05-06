@@ -5,6 +5,7 @@ $color-text : #000;
 $color-back : #fff;
 $color-shadow : #aaa;
 $color-body : #ddd;
+$color-dimmed : #888;
 
 $color-default-text      : $color-text;
 $color-dimmed-text       : #888;
@@ -65,7 +66,7 @@ header {
   border-radius:4px;
 }
 
-main {
+.collection, .document {
   margin-top:40px;
 }
 
@@ -118,7 +119,7 @@ main {
     margin: 16px $margin $margin 32px;
     display : table;
     * {
-      display:table-cell;
+      -webkit-display:table-cell; /* IE11用応急処置 */
       vertical-align:bottom;
     }
     textarea {

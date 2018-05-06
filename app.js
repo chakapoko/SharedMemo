@@ -29,7 +29,7 @@ app.use(sassMiddleware({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/doc', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api', apiRouter);
 
